@@ -46,18 +46,27 @@ const Block = ( props ) => {
 
   const { store: selectedId, dispatch } = React.useContext(Context)
   const parents = getBlockParents( clientId );
+  const block = getBlock( clientId );
 
+  const hasChildren = !! block.children;
+  const hasParent = !! parents[0];
   const isSelected = selectedId && selectedId === clientId;
   const isParentSelected = selectedId && selectedId === parents[0];
   const isAncestorSelected = selectedId && parents.includes( selectedId );
-  const isLeaf = React.Children.count( children ) === 0;
+
+  const selectionClass = isSelected
+    ? hasChildren ? 'selectedParent' : 'selectedLeaf'
+    : hasParent
+      ? isParentSelected
+        ? 'childOfSelected'
+        : isAncestorSelected
+          ? 'neutral'
+          : hasChildren ? 'neutral' : 'full'
+      : hasChildren ? 'neutral' : 'full';
 
   const classes = classnames(
     className,
-    isSelected && 'selected',
-    isParentSelected && 'parent-selected',
-    isAncestorSelected && 'ancestor-selected',
-    isLeaf && 'leaf',
+    selectionClass,
   );
 
   const onClick = ( event ) => {
@@ -178,6 +187,35 @@ function getBlockParents( clientId ) {
   return parents;
 }
 
+function flattenBlocks( blocks ) {
+	const result = {};
+
+	const stack = [ ...blocks ];
+	while ( stack.length ) {
+    const block = stack.shift();
+    const { children = [] } = block;
+		stack.push( ...children );
+		result[ block.clientId ] = block;
+	}
+
+	return result;
+}
+blocks.byClientId = flattenBlocks( blocks );
+
+function getBlock( clientId ) {
+  return blocks.byClientId[clientId];
+}
+
+function Rulers() {
+  return (
+    <div className='rulers'>
+      <div className="ruler-edges"></div>
+      <div className="ruler-selected"></div>
+      <div className="ruler-selected-children"></div>
+      <div className="ruler-content"></div>
+    </div>
+  );
+}
 
 function App() {
   const [ store, dispatch ] = React.useReducer(
@@ -195,6 +233,7 @@ function App() {
   return (
     <div className="App">
       <Context.Provider value={ { store, dispatch } }>
+        <Rulers />
         <BlockList blocks={ blocks } />
       </Context.Provider>
     </div>
