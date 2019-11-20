@@ -58,6 +58,14 @@
   width: 50%;
 }
 
+.media-container {
+  margin: 16px;
+}
+
+.media-container.selected {
+  margin: 12px;
+}
+
 .rulers {
   width: 480px;
   height: 100%;

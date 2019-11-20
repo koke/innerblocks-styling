@@ -5,20 +5,31 @@ import './App.css';
 
 const Block = ( props ) => {
   const {
-    clientId,
-    className,
-    children,
+    block,
   } = props;
+
+  const {
+    constructor: BlockEdit,
+    clientId,
+    ...blockProps
+  } = block;
 
   const { store: selectedId, dispatch } = React.useContext(Context)
   const parents = getBlockParents( clientId );
-  const block = getBlock( clientId );
 
   const hasChildren = !! block.children;
   const hasParent = !! parents[0];
   const isSelected = selectedId && selectedId === clientId;
   const isParentSelected = selectedId && selectedId === parents[0];
   const isAncestorSelected = selectedId && parents.includes( selectedId );
+
+  const selectors = {
+    hasChildren,
+    hasParent,
+    isSelected,
+    isParentSelected,
+    isAncestorSelected
+  };
 
   const selectionClass = isSelected
     ? hasChildren ? 'selectedParent' : 'selectedLeaf'
@@ -31,7 +42,8 @@ const Block = ( props ) => {
       : hasChildren ? 'neutral' : 'full';
 
   const classes = classnames(
-    className,
+    'block',
+    BlockEdit.name,
     selectionClass,
   );
 
@@ -45,14 +57,15 @@ const Block = ( props ) => {
       className={ classes }
       onClick={ onClick }
     >
-      { children }
+      <BlockEdit { ...blockProps } { ...selectors } />
     </div>
   );
 }
 
-const Image = ( ) => {
+const Image = ( props ) => {
+  const { className } = props;
   return (
-    <img src="https://placehold.it/400x200" alt="Placeholder" />
+    <img src="https://placehold.it/400x200" alt="Placeholder" className={ className } />
   );
 }
 
@@ -74,11 +87,13 @@ const Group = ( { children } ) => {
   );
 }
 
-const MediaText = ( { attributes, children } ) => {
+const MediaText = ( { attributes, children, isSelected, isAncestorSelected, isParentSelected } ) => {
   const { stack } = attributes;
+
+  const containerClass = isSelected ? 'selected' : 'neutral';
   return (
     <div className={ [ 'media-text', stack && 'stack' ].join( ' ' ) }>
-      <Image />
+      <Image className={ classnames( 'media-container', containerClass ) } />
       <BlockList blocks={ children } />
     </div>
   );
@@ -89,20 +104,8 @@ const BlockList = ( { blocks } ) => {
     <div className='block-list'>
       {
         blocks.map( ( block, index ) => {
-          const {
-            constructor: BlockEdit,
-            clientId,
-            ...props
-          } = block;
-
           return (
-            <Block
-              key={ index }
-              className={ 'block ' + BlockEdit.name }
-              clientId={ clientId }
-            >
-              <BlockEdit { ...props } />
-            </Block>
+            <Block key={ index } block={ block } />
           );
         } )
       }
