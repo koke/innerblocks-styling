@@ -160,6 +160,7 @@ const blocks = [
       block( Group, {}, [
         block( Heading, { content: 'Group 2.1.1' } ),
         block( Group, {}, [] ),
+        block( Heading, { content: 'Group 2.1.3' } ),
       ] ),
       ] ),
     block( Group, {}, [
