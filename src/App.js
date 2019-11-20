@@ -35,9 +35,11 @@ const Block = ( props ) => {
     ? hasChildren ? 'selectedParent' : 'selectedLeaf'
     : hasParent
       ? isParentSelected
-        ? 'childOfSelected'
+        ? hasChildren
+          ? 'childOfSelected'
+          : 'childOfSelectedLeaf'
         : isAncestorSelected
-          ? 'neutral'
+          ? 'descendantOfSelectedLeaf'
           : hasChildren ? 'neutral' : 'full'
       : hasChildren ? 'neutral' : 'full';
 
@@ -90,10 +92,12 @@ const Group = ( { children } ) => {
 const MediaText = ( { attributes, children, isSelected, isAncestorSelected, isParentSelected } ) => {
   const { stack } = attributes;
 
-  const containerClass = isSelected ? 'selected' : 'neutral';
+  const selectionClass = isSelected
+    ? 'selected'
+    : isParentSelected ? 'parent-selected' : 'neutral';
   return (
-    <div className={ [ 'media-text', stack && 'stack' ].join( ' ' ) }>
-      <Image className={ classnames( 'media-container', containerClass ) } />
+    <div className={ classnames( 'media-text', stack && 'stack', selectionClass ) }>
+      <Image className={ classnames( 'media-container', selectionClass ) } />
       <BlockList blocks={ children } />
     </div>
   );

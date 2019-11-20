@@ -1,3 +1,21 @@
+:root {
+  --edge-to-content: 16px;
+  --selected-margin: 3px;
+  --selected-border-width: 1px;
+  --selected-border-style: solid;
+  --selected-border-color: #00669b;
+  --selected-border-radius: 4px;
+  --selected-padding: 0px;
+  --selected-child-margin: 5px;
+  --selected-child-border-width: 1px;
+  --selected-child-border-style: dashed;
+  --selected-child-border-color: #87a6bc;
+  --selected-child-border-radius: 2px;
+  --selected-child-padding: 0;
+  --selected-to-content: calc( var(--edge-to-content) - var(--selected-margin) - var(--selected-border-width) );
+  --selected-child-to-content: calc( var(--selected-to-content) - var(--selected-child-margin) - var(--selected-child-border-width) )
+}
+
 .neutral {
   margin: 0;
   border: 0;
@@ -5,27 +23,41 @@
 }
 
 .full {
-  margin: 16px;
+  margin: var(--edge-to-content);
   border: 0;
   padding: 0;
 }
 
 .selectedLeaf {
-  margin: 3px;
-  border: 1px solid blue;
-  padding: 12px;
+  margin: var(--selected-margin);
+  border: var(--selected-border-width) var(--selected-border-style) var(--selected-border-color);
+  border-radius: var(--selected-border-radius);
+  padding: var(--selected-to-content);
 }
 
 .selectedParent {
-  margin: 3px;
-  border: 1px solid blue;
+  margin: var(--selected-margin);
+  border: var(--selected-border-width) var(--selected-border-style) var(--selected-border-color);
+  border-radius: var(--selected-border-radius);
   padding: 0;
 }
 
 .childOfSelected {
-  margin: 5px;
-  border: 1px dashed gray;
-  padding: 6px;
+  margin: var(--selected-child-margin);
+  border: var(--selected-child-border-width) var(--selected-child-border-style) var(--selected-child-border-color);
+  border-radius: var(--selected-child-border-radius);
+  padding: 0;
+}
+
+.childOfSelectedLeaf {
+  margin: var(--selected-child-margin);
+  border: var(--selected-child-border-width) var(--selected-child-border-style) var(--selected-child-border-color);
+  border-radius: var(--selected-child-border-radius);
+  padding: var(--selected-child-to-content);
+}
+
+.descendantOfSelectedLeaf {
+  margin: var(--selected-child-to-content);
 }
 
 .App {
@@ -58,12 +90,28 @@
   width: 50%;
 }
 
-.media-container {
-  margin: 16px;
+.media-text {
+  margin: 0;
 }
 
-.media-container.selected {
-  margin: 12px;
+.media-text .media-container {
+  margin: var(--edge-to-content);
+}
+
+.media-text.parent-selected {
+  margin: var(--selected-child-to-content);
+}
+
+.media-text.parent-selected .media-container {
+  margin: 0;
+}
+
+.media-text.selected {
+  margin: 0;
+}
+
+.media-text.selected .media-container {
+  margin: var(--selected-to-content);
 }
 
 .rulers {
