@@ -3,40 +3,6 @@ import uuid from 'uuid/v4';
 import classnames from 'classnames';
 import './App.css';
 
-const Image = ( ) => {
-  return (
-    <img src="https://placehold.it/400x200" alt="Placeholder" />
-  );
-}
-
-const Heading = ( { attributes } ) => {
-  return (
-    <h2>{ attributes.content }</h2>
-  );
-}
-
-const Paragraph = ( { attributes } ) => {
-  return (
-    <h2>{ attributes.content }</h2>
-  );
-}
-
-const Group = ( { children } ) => {
-  return (
-    <BlockList blocks={ children } />
-  );
-}
-
-const MediaText = ( { attributes, children } ) => {
-  const { stack } = attributes;
-  return (
-    <div className={ [ 'media-text', stack && 'stack' ].join( ' ' ) }>
-      <Image />
-      <BlockList blocks={ children } />
-    </div>
-  );
-}
-
 const Block = ( props ) => {
   const {
     clientId,
@@ -80,6 +46,40 @@ const Block = ( props ) => {
       onClick={ onClick }
     >
       { children }
+    </div>
+  );
+}
+
+const Image = ( ) => {
+  return (
+    <img src="https://placehold.it/400x200" alt="Placeholder" />
+  );
+}
+
+const Heading = ( { attributes } ) => {
+  return (
+    <h2>{ attributes.content }</h2>
+  );
+}
+
+const Paragraph = ( { attributes } ) => {
+  return (
+    <h2>{ attributes.content }</h2>
+  );
+}
+
+const Group = ( { children } ) => {
+  return (
+    <BlockList blocks={ children } />
+  );
+}
+
+const MediaText = ( { attributes, children } ) => {
+  const { stack } = attributes;
+  return (
+    <div className={ [ 'media-text', stack && 'stack' ].join( ' ' ) }>
+      <Image />
+      <BlockList blocks={ children } />
     </div>
   );
 }
