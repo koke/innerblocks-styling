@@ -45,7 +45,7 @@ const Block = ( props ) => {
 
   const classes = classnames(
     'block',
-    BlockEdit.displayName,
+    BlockEdit.className,
     selectionClass,
   );
 
@@ -70,28 +70,28 @@ const Image = ( props ) => {
     <img src="https://placehold.it/400x200" alt="Placeholder" className={ className } />
   );
 }
-Image.displayName = 'Image';
+Image.className = 'Image';
 
 const Heading = ( { attributes } ) => {
   return (
     <h2>{ attributes.content }</h2>
   );
 }
-Heading.displayName = 'Heading';
+Heading.className = 'Heading';
 
 const Paragraph = ( { attributes } ) => {
   return (
     <h2>{ attributes.content }</h2>
   );
 }
-Paragraph.displayName = 'Paragraph';
+Paragraph.className = 'Paragraph';
 
 const Group = ( { children } ) => {
   return (
     <BlockList blocks={ children } />
   );
 }
-Group.displayName = 'Group';
+Group.className = 'Group';
 
 const MediaText = ( { attributes, children, isSelected, isAncestorSelected, isParentSelected } ) => {
   const { stack } = attributes;
@@ -106,7 +106,7 @@ const MediaText = ( { attributes, children, isSelected, isAncestorSelected, isPa
     </div>
   );
 }
-MediaText.displayName = 'MediaText';
+MediaText.className = 'MediaText';
 
 const BlockList = ( { blocks } ) => {
   return (
