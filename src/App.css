@@ -60,6 +60,12 @@
   margin: var(--selected-child-to-content);
 }
 
+.group-placeholder {
+  min-height: 40px;
+  border: var(--selected-child-border-width) var(--selected-child-border-style) var(--selected-child-border-color);
+  border-radius: var(--selected-child-border-radius);
+}
+
 .App {
   width: 480px;
   margin: 0 auto;

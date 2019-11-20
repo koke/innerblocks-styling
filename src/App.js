@@ -17,7 +17,7 @@ const Block = ( props ) => {
   const { store: selectedId, dispatch } = React.useContext(Context)
   const parents = getBlockParents( clientId );
 
-  const hasChildren = !! block.children;
+  const hasChildren = !! ( block.children && block.children.length );
   const hasParent = !! parents[0];
   const isSelected = selectedId && selectedId === clientId;
   const isParentSelected = selectedId && selectedId === parents[0];
@@ -28,7 +28,7 @@ const Block = ( props ) => {
     hasParent,
     isSelected,
     isParentSelected,
-    isAncestorSelected
+    isAncestorSelected,
   };
 
   const selectionClass = isSelected
@@ -87,8 +87,11 @@ const Paragraph = ( { attributes } ) => {
 Paragraph.className = 'Paragraph';
 
 const Group = ( { children } ) => {
+  const isEmpty = ! ( children && children.length );
   return (
-    <BlockList blocks={ children } />
+    isEmpty
+      ? ( <div className='group-placeholder' /> )
+      : ( <BlockList blocks={ children } /> )
   );
 }
 Group.className = 'Group';
@@ -134,6 +137,7 @@ const block = ( constructor, attributes = {}, children ) => {
 
 const blocks = [
   block( Heading, { content: 'An image' } ),
+  block( Group, {}, [] ),
   block( Image ),
   block( Group, {}, [
     block( Heading, { content: 'Group 1' } ),
@@ -155,6 +159,7 @@ const blocks = [
       block( Heading, { content: 'Group 2.1' } ),
       block( Group, {}, [
         block( Heading, { content: 'Group 2.1.1' } ),
+        block( Group, {}, [] ),
       ] ),
       ] ),
     block( Group, {}, [
